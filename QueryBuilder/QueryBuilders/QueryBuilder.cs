@@ -109,7 +109,7 @@ namespace QueryBuilder.QueryBuilders
         }
 
         /// <summary>
-        /// Appends a query statement representing a single operation involving a source property and a target value.
+        /// Appends a query statement representing a single operation involving a source property (first) and a target value.
         /// </summary>
         /// <param name="sourceProperty">The source property to be used.</param>
         /// <param name="targetValue">The target value to be used.</param>
@@ -126,6 +126,29 @@ namespace QueryBuilder.QueryBuilders
                     this._parameter,
                     sourceProperty,
                     targetValue));
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends a query statement representing a single operation involving a target value (first) and a source property.
+        /// </summary>
+        /// <param name="targetValue">The target value to be used.</param>
+        /// <param name="sourceProperty">The source property to be used.</param>
+        /// <param name="operation">The operation to be used.</param>
+        /// <returns>The query builder object itself to chain methods afterwards.</returns>
+        public QueryBuilder<TEntity> By(object targetValue, string sourceProperty, QueryOperation operation)
+        {
+            if (this._current.Type == QueryType.QueryGroup)
+            {
+                this._current.Children.Add(new Query<TEntity>(
+                    this._current,
+                    QueryType.QueryStatement,
+                    operation,
+                    this._parameter,
+                    targetValue,
+                    sourceProperty));
             }
 
             return this;
@@ -154,7 +177,7 @@ namespace QueryBuilder.QueryBuilders
         }
 
         /// <summary>
-        /// Appends a query statement representing the Contains operation involving a source property and a target value.
+        /// Appends a query statement representing the Contains operation involving a source property (first) and a target value.
         /// </summary>
         /// <param name="sourceProperty">The source property to be used.</param>
         /// <param name="targetValue">The target value to be used.</param>
@@ -162,6 +185,17 @@ namespace QueryBuilder.QueryBuilders
         public QueryBuilder<TEntity> Contains(string sourceProperty, object targetValue)
         {
             return this.By(sourceProperty, targetValue, QueryOperation.Contains);
+        }
+
+        /// <summary>
+        /// Appends a query statement representing the Contains operation involving a target value (first) and a source property.
+        /// </summary>
+        /// <param name="targetValue">The target value to be used.</param>
+        /// <param name="sourceProperty">The source property to be used.</param>
+        /// <returns>The query builder object itself to chain methods afterwards.</returns>
+        public QueryBuilder<TEntity> Contains(object targetValue, string sourceProperty)
+        {
+            return this.By(targetValue, sourceProperty, QueryOperation.Contains);
         }
 
         /// <summary>
