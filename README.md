@@ -81,7 +81,7 @@ var query = new QueryBuilder<Product>()
 var products = ProductFactory.GetProducts().where(query);
 ```
 #### Example 5
-> Build an expression for (Name).EndsWith("Product 50") && Price < 150
+> Build an expression for (Name).EndsWith("Product 50") || Price < 150
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
