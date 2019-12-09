@@ -6,7 +6,7 @@ A small library that enables users to dynamically build lambda expressions via e
 
 - Expressions built through`QueryBuilder<T>()`can be passed to any functions expecting`Expression<Func<TSource, bool>>`predicates such as`First()`,`FirstOrDefault()`,`Last()`,`LastOrDefault()`,`Where()`,`Any()`,`All()`, etc.
 - Expressions can be built by starting with`Start()`, followed by conditions (e.g. `Equal()`,`GreaterThan()`, `GreaterThanOrEqual()`,`LessThan()`,`LessThanOrEqual()`), and ending with`End()`.
-  - Conditions can be chained by either`AndAlso()`or`OrElse()`.
+  - Conditions can be chained via either`AndAlso()`or`OrElse()`.
   - Conditions can be nested by nesting another sequence of `Start()`+ conditions + `End()`.
 
 ## Usage Example
