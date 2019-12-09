@@ -1,6 +1,6 @@
 # QueryBuilder
 
-A small library that enables users to dynamically build lambda expressions via expression trees, which can be utilized to filter collections based on user input, create generic repositories for EF/EF Core, etc
+A small library that enables users to dynamically build lambda expressions via expression trees, which can be utilized to filter collections of objects based on user input, create generic repositories for EF/EF Core, etc
 
 ## How Tos
 
