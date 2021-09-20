@@ -39,37 +39,37 @@ public static class ProductFactory {
 }
 ```
 #### Example 1
-> Build an expression for Product == 1
+> Build an expression for (p => p.Product == 1)
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
                           .Equal(nameof(Product.ProductId), 1)
                       .End()
                       .Build();
-var products = ProductFactory.GetProducts().where(query);
+var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 2
-> Build an expression for Price > 250
+> Build an expression for (p => p.Price > 250)
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
                           .GreaterThan(nameof(Product.Price), 250.0d)
                       .End()
                       .Build();
-var products = ProductFactory.GetProducts().where(query);
+var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 3
-> Build an expression for ([10, 20, 30, 40, 50]).Contains(ProductId)
+> Build an expression for (p => [10, 20, 30, 40, 50].Contains(p.ProductId))
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
                           .Contains(new int[] { 10, 20, 30, 40, 50 }, nameof(Product.ProductId))
                       .End()
                       .Build();
-var products = ProductFactory.GetProducts().where(query);
+var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 4
-> Build an expression for (Name).StartsWith("Product 1") && Price > 150
+> Build an expression for (p => p.Name.StartsWith("Product 1") && p.Price > 150)
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
@@ -78,10 +78,10 @@ var query = new QueryBuilder<Product>()
                           .GreaterThan(nameof(Product.Price), 150.0d)
                       .End()
                       .Build();
-var products = ProductFactory.GetProducts().where(query);
+var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 5
-> Build an expression for (Name).EndsWith("Product 50") || Price < 150
+> Build an expression for (p => p.Name.EndsWith("Product 50") || p.Price < 150)
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
@@ -90,10 +90,10 @@ var query = new QueryBuilder<Product>()
                           .LessThan(nameof(Product.Price), 150.0d)
                       .End()
                       .Build();
-var products = ProductFactory.GetProducts().where(query);
+var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 6
-> Build an expression for (Name).StartsWith("Product 1") && (([10, 20, 30, 40, 50]).Contains(ProductId) && Price <= 150)
+> Build an expression for (p => p.Name.StartsWith("Product 1") && ([10, 20, 30, 40, 50].Contains(p.ProductId) && p.Price <= 150))
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
@@ -106,10 +106,10 @@ var query = new QueryBuilder<Product>()
                           .End()
                       .End()
                       .Build();
-var products = ProductFactory.GetProducts().where(query);
+var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 7
-> Build an expression for (Name).StartsWith("Product 1") || (([10, 20, 30, 40, 50]).Contains(ProductId) || Price <= 150)
+> Build an expression for (p => p.Name.StartsWith("Product 1") || ([10, 20, 30, 40, 50].Contains(p.ProductId) || p.Price <= 150))
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
@@ -122,21 +122,5 @@ var query = new QueryBuilder<Product>()
                           .End()
                       .End()
                       .Build();
-var products = ProductFactory.GetProducts().where(query);
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var products = ProductFactory.GetProducts().Where(query);
 ```
