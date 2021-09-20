@@ -18,6 +18,7 @@ public class Product
     public int ProductId { get; set; }
     public string Name { get; set; }
     public double Price { get; set; }
+    public bool IsStocked { get; set;}
 }
 
 public static class ProductFactory {
@@ -30,7 +31,8 @@ public static class ProductFactory {
             {
                 ProductId = i,
                 Name = $"Product {i}",
-                Price = i * 10.0d,
+                Price = i * 100d,
+                IsStocked = i % 2 != 0,
             };
             products.Add(product);
         }
@@ -49,11 +51,11 @@ var query = new QueryBuilder<Product>()
 var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 2
-> Build an expression for (p => p.Price > 250)
+> Build an expression for (p => p.Price > 2500)
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
-                          .GreaterThan(nameof(Product.Price), 250.0d)
+                          .GreaterThan(nameof(Product.Price), 2500d)
                       .End()
                       .Build();
 var products = ProductFactory.GetProducts().Where(query);
@@ -69,56 +71,54 @@ var query = new QueryBuilder<Product>()
 var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 4
-> Build an expression for (p => p.Name.StartsWith("Product 1") && p.Price > 150)
+> Build an expression for (p => p.Name.StartsWith("Product 1") && p.Price > 1500)
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
                           .StartsWith(nameof(Product.Name), "Product 1")
                           .AndAlso()
-                          .GreaterThan(nameof(Product.Price), 150.0d)
+                          .GreaterThan(nameof(Product.Price), 1500d)
                       .End()
                       .Build();
 var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 5
-> Build an expression for (p => p.Name.EndsWith("Product 50") || p.Price < 150)
+> Build an expression for (p => p.Name.EndsWith("Product 50") || p.Price < 1500)
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
                           .EndsWith(nameof(Product.Name), "Product 50")
                           .OrElse()
-                          .LessThan(nameof(Product.Price), 150.0d)
+                          .LessThan(nameof(Product.Price), 1500d)
                       .End()
                       .Build();
 var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 6
-> Build an expression for (p => p.Name.StartsWith("Product 1") && ([10, 20, 30, 40, 50].Contains(p.ProductId) && p.Price <= 150))
+> Build an expression for (p => p.ProductId < 25 && p.IsStocked || p.Price > 2500)
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
-                          .StartsWith(nameof(Product.Name), "Product 1")
+                          .LessThan(nameof(Product.ProductId), 25)
                           .AndAlso()
-                          .Start()
-                              .Contains(new int[] { 10, 20, 30, 40, 50 }, nameof(Product.ProductId))
-                              .AndAlso()
-                              .LessThanOrEqual(nameof(Product.Price), 150.0d)
-                          .End()
+                          .Equal(nameof(Product.IsStocked), true)
+                          .OrElse()
+                          .GreaterThan(nameof(Product.Price), 2500d)
                       .End()
                       .Build();
 var products = ProductFactory.GetProducts().Where(query);
 ```
 #### Example 7
-> Build an expression for (p => p.Name.StartsWith("Product 1") || ([10, 20, 30, 40, 50].Contains(p.ProductId) || p.Price <= 150))
+> Build an expression for (p => p.ProductId < 25 && (p.IsStocked || p.Price > 2500))
 ```csharp
 var query = new QueryBuilder<Product>()
                       .Start()
-                          .StartsWith(nameof(Product.Name), "Product 1")
-                          .OrElse()
+                          .LessThan(nameof(Product.ProductId), 25)
+                          .AndAlso()
                           .Start()
-                              .Contains(new int[] { 10, 20, 30, 40, 50 }, nameof(Product.ProductId))
+                              .Equal(nameof(Product.IsStocked), true)
                               .OrElse()
-                              .LessThanOrEqual(nameof(Product.Price), 150.0d)
+                              .GreaterThan(nameof(Product.Price), 2500d)
                           .End()
                       .End()
                       .Build();
